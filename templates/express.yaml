@@ -1,0 +1,30 @@
+project:
+  name: express-template
+  version: 1.0.0
+
+steps:
+  - "npm init -y"
+  - "npm install express"
+  - "npm install dotenv"
+  - "npm install nodemon --save-dev"
+  - "npm install eslint --save-dev"
+  - "mkdir -Force src"
+  - "mkdir -Force src/routes"
+  - "mkdir -Force src/controllers"
+  - "mkdir -Force src/models"
+  - "mkdir -Force src/middlewares"
+  - "mkdir -Force src/config"
+  - "mkdir -Force src/services"
+  - "mkdir -Force src/utils"
+  - "New-Item -ItemType File -Force src/server.js"
+  - "New-Item -ItemType File -Force src/app.js"
+  - "New-Item -ItemType File -Force README.md"
+  - "New-Item -ItemType File -Force .gitignore"
+  - "echo '**/.env' | Out-File -Append -Encoding utf8 .gitignore"
+  - "echo \"import express from 'express';\nimport app from './app.js';\nimport dotenv from 'dotenv';\ndotenv.config();\n\nconst port = process.env.PORT || 3000;\napp.listen(port, () => console.log('App listens on http://localhost:' + port + '/api'));\" | Out-File -Encoding utf8 src/server.js"
+  - "echo \"import express from 'express';\nconst app = express();\napp.use(express.json());\nexport default app;\" | Out-File -Encoding utf8 src/app.js"
+  - "npm pkg set scripts.dev=\"nodemon src/server.js\""
+  - "npm pkg set type=\"module\""
+  - "npm pkg set license=\"MIT\""
+  - "npm pkg set main=\"src/server.js\""
+  - "npm pkg set scripts.start=\"node src/server.js\""
