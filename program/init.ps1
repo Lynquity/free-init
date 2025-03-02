@@ -1,5 +1,5 @@
 Param(
-    [string]$File = "./../templates/express.yaml", # Path to the YAML file (modify or provide via parameter)
+    [string]$File = "./../templates/expressts.yaml", # Path to the YAML file (modify or provide via parameter)
     [string]$path = "."
 )
 
