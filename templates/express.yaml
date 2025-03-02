@@ -15,7 +15,6 @@ steps:
   - "mkdir -Force src/middlewares"
   - "mkdir -Force src/config"
   - "mkdir -Force src/services"
-  - "mkdir -Force src/utils"
   - "New-Item -ItemType File -Force src/server.js"
   - "New-Item -ItemType File -Force src/app.js"
   - "New-Item -ItemType File -Force README.md"
