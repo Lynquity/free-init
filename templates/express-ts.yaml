@@ -1,0 +1,30 @@
+project:
+  name: express-ts-template
+  version: 1.0.0
+
+steps:
+  - "npm init -y"
+  - "npm install express"
+  - "npm install --save-dev @types/express typescript ts-node nodemon @types/node jest ts-jest @types/jest supertest @types/supertest"
+  - "echo \"{\\n  \"compilerOptions\": {\\n    \"target\": \"ES6\",\\n    \"module\": \"commonjs\",\\n    \"rootDir\": \"./src\",\\n    \"outDir\": \"./dist\",\\n    \"strict\": true,\\n    \"esModuleInterop\": true,\\n    \"skipLibCheck\": true\\n  },\\n  \"include\": [\"src/**/*\"],\\n  \"exclude\": [\"node_modules\", \"**/*.test.ts\"]\\n}\" | Out-File -Encoding utf8 tsconfig.json"
+  - "echo \"module.exports = {\\n  preset: 'ts-jest',\\n  testEnvironment: 'node',\\n  testMatch: ['**/*.test.ts']\\n};\" | Out-File -Encoding utf8 jest.config.js"
+  - "mkdir -Force src"
+  - "mkdir -Force src/config"
+  - "mkdir -Force src/controllers"
+  - "mkdir -Force src/models"
+  - "mkdir -Force src/routes"
+  - "mkdir -Force src/middlewares"
+  - "mkdir -Force src/services"
+  - "echo \"import express from \"express\";\\nimport userRoutes from \"./routes/userRoutes\";\\n\\nconst app = express();\\napp.use(express.json());\\n\\n// Beispielroute\\napp.use(\"/users\", userRoutes);\\n\\nconst PORT = process.env.PORT || 3000;\\napp.listen(PORT, () => {\\n  console.log(`Server läuft auf Port ${PORT}`);\\n});\\n\\nexport default app;\" | Out-File -Encoding utf8 src/app.ts"
+  - "echo \"// Konfigurationseinstellungen\\nexport const config = {\\n  // Füge hier deine Konfigurationen hinzu\\n};\" | Out-File -Encoding utf8 src/config/app.ts"
+  - "echo \"// DB-Verbindungslogik\\nexport const connectDB = () => {\\n  // Verbindung zur Datenbank herstellen\\n};\" | Out-File -Encoding utf8 src/config/db.ts"
+  - "echo \"import { Request, Response } from \"express\";\\n\\nexport const getUsers = (req: Request, res: Response) => {\\n  res.json([{ id: 1, name: \"Max Mustermann\" }]);\\n};\" | Out-File -Encoding utf8 src/controllers/userController.ts"
+  - "echo \"// User Modell (z.B. für eine Datenbank)\\nexport interface User {\\n  id: number;\\n  name: string;\\n}\" | Out-File -Encoding utf8 src/models/userModel.ts"
+  - "echo \"import { Router } from \"express\";\\nimport { getUsers } from \"../controllers/userController\";\\n\\nconst router = Router();\\n\\nrouter.get(\"/\", getUsers);\\n\\nexport default router;\" | Out-File -Encoding utf8 src/routes/userRoutes.ts"
+  - "echo \"// Authentifizierungsmiddleware\\nexport const authMiddleware = (req, res, next) => {\\n  // Authentifizierung prüfen\\n  next();\\n};\" | Out-File -Encoding utf8 src/middlewares/authMiddleware.ts"
+  - "echo \"// Geschäftslogik für User\\nexport const getUserService = () => {\\n  // Logik hier\\n};\" | Out-File -Encoding utf8 src/services/userService.ts"
+  - "echo \"import request from \"supertest\";\\nimport app from \"./app\";\\n\\ndescribe(\"GET /users\", () => {\\n  it(\"sollte eine Liste von Benutzern zurückgeben\", async () => {\\n    const response = await request(app).get(\"/users\");\\n    expect(response.status).toBe(200);\\n    expect(response.body).toEqual([{ id: 1, name: \"Max Mustermann\" }]);\\n  });\\n});\" | Out-File -Encoding utf8 src/app.test.ts"
+  - "npm pkg set scripts.start=\"node dist/app.js\""
+  - "npm pkg set scripts.build=\"tsc\""
+  - "npm pkg set scripts.dev=\"nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/app.ts\""
+  - "npm pkg set scripts.test=\"jest\""
